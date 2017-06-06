@@ -34,7 +34,7 @@ def index(request):
 '''
 #1. added Http404
 #2. removed HttpResponse, used render shortcut & added detail.html template
-def details(request,question_id):
+def detail(request,question_id):
     try:
         question = Question.objects.get(pk=question_id)
     except Question.DoesNotExist:
@@ -44,7 +44,7 @@ def details(request,question_id):
     return render(request, 'polls/detail.html',{'question':question})
 '''
 # used shortcut for http404 handling "get_object_or_404"
-def details(request,question_id):
+def detail(request,question_id):
     question = get_object_or_404(Question,pk=question_id)
     return render(request, 'polls/detail.html',{'question':question})
 
