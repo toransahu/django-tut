@@ -38,11 +38,13 @@ def index(request):
 
 '''
 
-#version 3 of index: Used Generic Views
+#version 3 of index: Used Generic Views (display a list of objects)
 
 class IndexView(generic.ListView):
-    template_name='polls/index.html'
-    context_object_name='latest_question_list'
+    template_name='polls/index.html' #defualt variable
+    context_object_name='latest_question_list' #defualt variable
+
+    #for ListView, the automatically generated context variable is "question_list". To override this we provide the context_object_name attribute, specifying that we want to use "latest_question_list" instead.
 
     def get_queryset(self):
         """Return the last five published questions."""
@@ -72,12 +74,13 @@ def detail(request,question_id):
     return render(request, 'polls/detail.html',{'question':question})
 '''
 
-#version 3 of detail: Implemented Generic Views
+#version 3 of detail: Implemented Generic Views (display a detail page for a particular type of object)
 
 class DetailView(generic.DetailView):
-    model=Question
-    template_name='polls/detail.html'
-    
+    model=Question #default var model tells DetailView to work on a particular model object
+    template_name='polls/detail.html' #default var, tells to do not autogenerate template & pick specific template
+    #By default, the DetailView generic view uses a template called <app name>/<model name>_detail.html
+    #For DetailView the question variable is provided automatically – since we’re using a Django model (Question)
     
 '''
 #version 1 of results
@@ -88,13 +91,13 @@ def results(request, question_id):
     return render (request, 'polls/results.html',{'question':question})
 '''
 
-#version 2 of results: Implemented Generic Views
+#version 2 of results: Implemented Generic Views (display a detail page for a particular type of object)
 
 class ResultsView(generic.DetailView):
     model=Question
     template_name='polls/results.html'
 
-
+#No any suitable Generic view
 #implementation pending: avoid race condition using F()
 def vote(request, question_id):
     question=get_object_or_404(Question,pk=question_id)
