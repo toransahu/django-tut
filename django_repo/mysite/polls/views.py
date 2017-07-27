@@ -5,6 +5,7 @@ from .models import Question
 from django.http import Http404
 from django.urls import reverse
 from django.views import generic
+from django.utils import timezone
 
 # Create your views here.
 
@@ -41,15 +42,25 @@ def index(request):
 #version 3 of index: Used Generic Views (display a list of objects)
 
 class IndexView(generic.ListView):
-    template_name='polls/index.html' #defualt variable
-    context_object_name='latest_question_list' #defualt variable
+    template_name='polls/index.html' #default variable
+    context_object_name='latest_question_list' #default variable
 
     #for ListView, the automatically generated context variable is "question_list". To override this we provide the context_object_name attribute, specifying that we want to use "latest_question_list" instead.
 
     def get_queryset(self):
         """Return the last five published questions."""
-        return Question.objects.order_by('-pub_date')[:5]
+        #.1 below code was showing future poll/questions
+        #.1 return Question.objects.order_by('-pub_date')[:5]
 
+        #re-defining
+        """
+        Return the last five published questions (not including those set to be
+        published in the future).
+        """     
+        #imported timezone
+        
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
+        
 
 
 '''
@@ -81,6 +92,13 @@ class DetailView(generic.DetailView):
     template_name='polls/detail.html' #default var, tells to do not autogenerate template & pick specific template
     #By default, the DetailView generic view uses a template called <app name>/<model name>_detail.html
     #For DetailView the question variable is provided automatically – since we’re using a Django model (Question)
+
+    """
+    Excludes any questions that aren't published yet.
+    """
+    def get_queryset(self):
+        return Question.objects.filter(pub_date__lte=timezone.now())
+    
     
 '''
 #version 1 of results
