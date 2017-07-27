@@ -8,4 +8,9 @@ Perhaps logged-in admin users should be allowed to see unpublished Questions, bu
 
 At a certain point you are bound to look at your tests and wonder whether your code is suffering from test bloat, which brings us to:
 
+
+use an “in-browser” framework such as Selenium to test
+
+Integration with coverage.py:  It shows which parts of your code are being exercised by tests and which are not
+
 url: https://docs.djangoproject.com/en/1.11/intro/tutorial05/
