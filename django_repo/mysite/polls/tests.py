@@ -37,16 +37,18 @@ class QuestionModelTests(TestCase):
         recent_question = Question(pub_date=time) #created new question object
         self.assertIs(recent_question.was_published_recently(),True)
 
-    def create_question(question_text,days):
-        """
-        Create a question with the given question_text and 'days' offset.
-        'days' could be in -N or N, where N is the number of days from NOW,
-        when question was/will be published.
-        """
-        time = timezone.now() + datetime.timedelta(days=days)
-        return Question.objects.create(question_text=question_text,pub_date=time)
+#shortcut function to create questions 
+def create_question(question_text,days):
+    """
+    Create a question with the given question_text and 'days' offset.
+    'days' could be in -N or N, where N is the number of days from NOW,
+    when question was/will be published.
+    """
+    time = timezone.now() + datetime.timedelta(days=days)
+    return Question.objects.create(question_text=question_text,pub_date=time)
 
 class QuestionIndexViewTests(TestCase):
+    
     def test_no_question(self):
         """
         If no question exist, am appropriate message is displayed.
@@ -61,7 +63,7 @@ class QuestionIndexViewTests(TestCase):
         Questions with a pub_date in the past are displayed on the
         index page.
         """
-        create_question(question_text="Pas question.", days=-30)
+        create_question(question_text="Past question.", days=-30)
         response = self.client.get(reverse('polls:index'))
         self.assertQuerysetEqual(
             response.context['latest_question_list'],
