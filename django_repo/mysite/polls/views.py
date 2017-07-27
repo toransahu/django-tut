@@ -42,8 +42,8 @@ def index(request):
 #version 3 of index: Used Generic Views (display a list of objects)
 
 class IndexView(generic.ListView):
-    template_name='polls/index.html' #defualt variable
-    context_object_name='latest_question_list' #defualt variable
+    template_name='polls/index.html' #default variable
+    context_object_name='latest_question_list' #default variable
 
     #for ListView, the automatically generated context variable is "question_list". To override this we provide the context_object_name attribute, specifying that we want to use "latest_question_list" instead.
 
