@@ -37,7 +37,7 @@ class QuestionModelTests(TestCase):
         recent_question = Question(pub_date=time) #created new question object
         self.assertIs(recent_question.was_published_recently(),True)
 
-#shortcut function to create questions 
+#shortcut function to create questions
 def create_question(question_text,days):
     """
     Create a question with the given question_text and 'days' offset.
@@ -48,7 +48,7 @@ def create_question(question_text,days):
     return Question.objects.create(question_text=question_text,pub_date=time)
 
 class QuestionIndexViewTests(TestCase):
-    
+
     def test_no_question(self):
         """
         If no question exist, am appropriate message is displayed.
@@ -79,7 +79,7 @@ class QuestionIndexViewTests(TestCase):
         response = self.client.get(reverse('polls:index'))
         self.assertContains(response, "No polls are available.")
         self.assertQuerysetEqual(response.context['latest_question_list'],[])
-        
+
     def test_future_and_past_question(self):
         """
         Even if both past and future questions exist, only past questions
@@ -104,28 +104,27 @@ class QuestionIndexViewTests(TestCase):
             response.context['latest_question_list'],
             ['<Question: Past question 2.>', '<Question: Past question 1.>']
         )
-        
 
+class QuestionDetailViewTests(TestCase):
+    def test_future_question(self):
+        """
+        The detail view of a question with a pub_date in the future
+        returns a 404 not found.
+        ***(in case if anybody guess the url for detail view correctly)***
+        """
+        future_question = create_question(question_text='Future question.',days=5)
+        url = reverse('polls:detail', args=(future_question.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code,404)
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-                            
+    def test_past_question(self):
+        """
+        The detail view of a question with a pub_date in the past
+        displays the question's text.
+        (and returns status_code 200)
+        """
+        past_question =  create_question(question_text="Past Question.", days=-5)
+        url = reverse('polls:detail', args=(past_question.id,))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code,200)
+        self.assertContains(response,past_question.question_text)
