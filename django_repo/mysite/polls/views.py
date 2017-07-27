@@ -92,6 +92,13 @@ class DetailView(generic.DetailView):
     template_name='polls/detail.html' #default var, tells to do not autogenerate template & pick specific template
     #By default, the DetailView generic view uses a template called <app name>/<model name>_detail.html
     #For DetailView the question variable is provided automatically – since we’re using a Django model (Question)
+
+    """
+    Excludes any questions that aren't published yet.
+    """
+    def get_queryset(self):
+        return Question.objects.filter(pub_date__lte=timezone.now())
+    
     
 '''
 #version 1 of results
