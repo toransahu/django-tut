@@ -5,6 +5,7 @@ from .models import Question
 from django.http import Http404
 from django.urls import reverse
 from django.views import generic
+from django.utils import timezone
 
 # Create your views here.
 
@@ -48,8 +49,18 @@ class IndexView(generic.ListView):
 
     def get_queryset(self):
         """Return the last five published questions."""
-        return Question.objects.order_by('-pub_date')[:5]
+        #.1 below code was showing future poll/questions
+        #.1 return Question.objects.order_by('-pub_date')[:5]
 
+        #re-defining
+        """
+        Return the last five published questions (not including those set to be
+        published in the future).
+        """     
+        #imported timezone
+        
+        return Question.objects.filter(pub_date__lte=timezone.now()).order_by('-pub_date')[:5]
+        
 
 
 '''
