@@ -27,7 +27,8 @@ admin.site.register(Choice)
 
 ##customization #3: Inline Choice addition
 
-class ChoiceInline(admin.StackedInline):
+#class ChoiceInline(admin.StackedInline): #display choices in stack format
+class ChoiceInline(admin.TabularInline): #display choices in tabular format
     model = Choice
     extra = 3
 
