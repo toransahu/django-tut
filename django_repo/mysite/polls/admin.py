@@ -4,14 +4,17 @@ from .models import Question, Choice
 
 #customize the admin form
 """
-#customization #1: re-order fields
+##customization #1: re-order fields
 class QuestionAdmin(admin.ModelAdmin):
     fields = ['pub_date', 'question_text']
     #This particular change above makes the “Publication date”
     #come before the “Question” field
+
+admin.site.register(Question)
 """
 
-#customization #2: fieldset concept
+##customization #2: fieldset concept
+"""
 class QuestionAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['question_text']}),
@@ -20,3 +23,19 @@ class QuestionAdmin(admin.ModelAdmin):
 
 admin.site.register(Question, QuestionAdmin)
 admin.site.register(Choice)
+"""
+
+##customization #3: Inline Choice addition
+
+class ChoiceInline(admin.StackedInline):
+    model = Choice
+    extra = 3
+
+class QuestionAdmin(admin.ModelAdmin):
+    fieldsets = [
+        (None, {'fields':['question_text']}),
+        ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
+    ]
+    inlines = [ChoiceInline]
+
+admin.site.register(Question, QuestionAdmin)
