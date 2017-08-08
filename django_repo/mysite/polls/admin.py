@@ -38,5 +38,9 @@ class QuestionAdmin(admin.ModelAdmin):
         ('Date information', {'fields': ['pub_date'], 'classes': ['collapse']}),
     ]
     inlines = [ChoiceInline]
+    #implementing list_display to display individual fields
+    #also added was_published_recently()
+    list_display = ('question_text', 'pub_date', 'was_published_recently')
+    
 
 admin.site.register(Question, QuestionAdmin)
