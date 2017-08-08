@@ -23,9 +23,9 @@ class Question(models.Model):
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.pub_date <= now
     #improvise: adding attributes to was_published_recently() for admin page
-    was_published_recently.admin_order_filed = 'pub_date'
-    was_published_recently.boolean = True
-    was_published_recently.short_description = 'Published recently?'
+    was_published_recently.admin_order_field = 'pub_date' #will give option to sort questions based on pub_date, by clicking on column header
+    was_published_recently.boolean = True #will show true/false icon
+    was_published_recently.short_description = 'Published recently?' #will modify column header
 
 class Choice (models.Model):
     question =     models.ForeignKey(Question,on_delete=models.CASCADE)
