@@ -41,7 +41,8 @@ class QuestionAdmin(admin.ModelAdmin):
     #implementing list_display to display individual fields
     #also added was_published_recently()
     list_display = ('question_text', 'pub_date', 'was_published_recently')
-    list_filter =['pub_date'] #will show a filter option
+    list_filter = ['pub_date'] #will show a filter option
+    search_fields = ['question_text'] #will provide option to search question by q_text
     
 
 admin.site.register(Question, QuestionAdmin)
